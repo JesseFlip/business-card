@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leveraging Python for Sales Analytics - Jesse Flippen</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .post-content {
+            font-size: 1.1rem;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .post-content p {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="blog.html">All Posts</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="blog-page-header">
+        <h1>Leveraging Python for Sales Analytics</h1>
+        <span style="color: #BDC3C7;">February 15, 2024</span>
+    </div>
+
+    <main>
+        <section class="post-content">
+            <p><strong>The Problem:</strong> Every Monday morning, our team would spend roughly 3-4 hours manually pulling data from three different sources (Compass, SAP, and Salesforce), cleaning it in Excel, and creating pivot tables to track performance against our monthly goals. This "reporting paralysis" delayed actionable insights until Tuesday.</p>
+
+            <p><strong>The Solution:</strong> I recognized that this process was repetitive and rule-based—perfect for automation. I decided to learn Python to solve this specific problem.</p>
+
+            <h3>Step 1: Data Ingestion</h3>
+            <p>Using the `pandas` library, I wrote a script to ingest the raw CSV exports from our internal systems. </p>
+
+            <h3>Step 2: Transformation</h3>
+            <p>The script merges the datasets on Account ID, filters for our priority supplier (Moët Hennessy), and calculates the variance between 'Actual Sales' and 'Goal'.</p>
+
+            <h3>Step 3: Output</h3>
+            <p>The final output is a clean, formatted Excel file ready for distribution. What used to take 4 hours now takes 30 seconds.</p>
+
+            <p><strong>The Impact:</strong> The team now has performance data in their inbox by 8:00 AM Monday. We can spend our Monday meetings discussing strategy rather than staring at loading bars. This project ignited my passion for programming and demonstrated the power of technical skills in a non-technical role.</p>
+
+            <br>
+            <a href="blog.html" class="read-more">&larr; Back to Blog</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Jesse Flippen. All rights reserved.</p>
+    </footer>
+</body>
+</html>
