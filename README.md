@@ -1,7 +1,3 @@
-Based on the content and professional focus of your portfolio site, here is a polished `README.md` you can use for your GitHub repository. It highlights your unique transition from business leadership to solutions engineering.
-
----
-
 # Jesse Flippen | Solutions Engineer Portfolio
 
 This repository contains the source code for my professional portfolio website, designed to showcase the intersection of **Enterprise Strategy** and **Technical Implementation**.
@@ -47,9 +43,4 @@ A production-ready tool built to solve a specific business case in the spirits i
 * **LinkedIn:** [Jesse Flippen](https://www.google.com/search?q=https://jflip.netlify.app/https://linkedin.com/)
 * **Email:** [Contact Me](https://www.google.com/search?q=https://jflip.netlify.app/mailto:jss.flppn%40gmail.com)
 * **Location:** Texas
-
----
-
-### Next Step
-
-Would you like me to add a **"How to Run Locally"** section with instructions for setting up a local development server?
+![Screenshot of Jesse's Porftolio Site](https://github.com/JesseFlip/business-card/blob/main/images/business_card.png )
