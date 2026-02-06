@@ -58,7 +58,7 @@ header {
 
 /* Sections */
 section {
-    padding: 60px 20px;
+    padding: 80px 20px;
     max-width: 960px;
     margin: 0 auto;
 }
@@ -138,6 +138,13 @@ h2::after {
     font-size: 1.1rem;
     color: var(--text-color);
     line-height: 1.8;
+    text-align: left;
+}
+
+.bio ul {
+    list-style-position: inside;
+    padding-left: 20px;
+    margin-bottom: 30px;
 }
 
 .bio h2 {
@@ -147,6 +154,37 @@ h2::after {
 }
 .bio h2::after {
     display: none;
+}
+
+.resume-btn {
+    display: inline-block;
+    background-color: var(--highlight-color);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.resume-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--highlight-color);
 }
 
 /* Skills Section */
