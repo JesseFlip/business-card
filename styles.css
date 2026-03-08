@@ -24,6 +24,28 @@
     --transition: 0.25s ease;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #90caf9;
+        --secondary: #64b5f6;
+        --accent: #42a5f5;
+        --accent-dark: #1e88e5;
+        --bg: #121212;
+        --card-bg: #1e1e1e;
+        --text: #e0e0e0;
+        --text-light: #aaaaaa;
+        --border: #333333;
+        --success: #81c784;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    header, footer {
+        background-color: #0d1b2a;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════
    Reset & Base
 ═══════════════════════════════════════════════════════ */
@@ -118,6 +140,21 @@ section {
     padding: 80px 24px;
     max-width: 1000px;
     margin: 0 auto;
+}
+
+.fade-in-section {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, visibility;
+}
+
+.js-enabled .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.js-enabled .fade-in-section.is-visible {
+    opacity: 1;
+    transform: none;
 }
 
 h2 {

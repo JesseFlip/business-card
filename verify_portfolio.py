@@ -21,10 +21,10 @@ def run():
         hero_text = page.locator('.text p').inner_text()
         print(f"Hero Role Text: {hero_text}")
         assert "Solutions Engineer" in hero_text
-        assert "Bridging Enterprise Strategy" in hero_text
+        assert "Cybersecurity Professional" in hero_text
 
         # Verify Resume Button
-        resume_btn = page.locator('.resume-btn')
+        resume_btn = page.locator('.resume-btn').first
         is_resume_visible = resume_btn.is_visible()
         print(f"Resume Button Visible: {is_resume_visible}")
         assert is_resume_visible
@@ -34,8 +34,8 @@ def run():
         # .social-links class is used in Hero and Footer
         social_links_count = page.locator('.social-links a').count()
         print(f"Social Links in .social-links containers: {social_links_count}")
-        # Expect 2 in Hero + 2 in Footer = 4
-        assert social_links_count == 4
+        # Expect 3 in Hero + 3 in Footer = 6
+        assert social_links_count == 6
 
         # Verify Header Links
         header_email = page.locator('nav a[href^="mailto:"]')
@@ -48,7 +48,7 @@ def run():
         # Verify Skills Categories
         categories = page.locator('.skill-category h3').all_inner_texts()
         print(f"Skill Categories Found: {categories}")
-        expected_cats = ["Languages & Logic", "Cloud & Infrastructure", "Business Intelligence", "Domain Expertise"]
+        expected_cats = ["Languages & Command Line", "Cloud & Infrastructure", "Business Intelligence", "Domain Expertise"]
         for cat in expected_cats:
             if cat not in categories:
                 print(f"FAIL: Missing category {cat}")
