@@ -20,8 +20,8 @@ def run():
         # Verify Hero Role Text
         hero_text = page.locator('.text p').inner_text()
         print(f"Hero Role Text: {hero_text}")
-        assert "Solutions Engineer" in hero_text
-        assert "Cybersecurity Professional" in hero_text
+        assert "Cybersecurity & AI Professional" in hero_text
+        assert "AWS Certified Cloud Practitioner" in hero_text
 
         # Verify Resume Button
         resume_btn = page.locator('.resume-btn').first
