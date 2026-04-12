@@ -20,8 +20,8 @@ def run():
         # Verify Hero Role Text
         hero_text = page.locator('.text p').inner_text()
         print(f"Hero Role Text: {hero_text}")
-        assert "Cybersecurity & AI Professional" in hero_text
-        assert "AWS Certified Cloud Practitioner" in hero_text
+        assert "Cybersecurity Analyst" in hero_text
+        assert "AWS Cloud Practitioner" in hero_text
 
         # Verify Resume Button
         resume_btn = page.locator('.resume-btn').first
@@ -48,7 +48,7 @@ def run():
         # Verify Skills Categories
         categories = page.locator('.skill-category h3').all_inner_texts()
         print(f"Skill Categories Found: {categories}")
-        expected_cats = ["Languages & Command Line", "Cloud & Infrastructure", "Business Intelligence", "Domain Expertise"]
+        expected_cats = ["Core Cybersecurity & Python", "Cloud & Infrastructure", "Business Intelligence & Data", "Supporting Skills"]
         for cat in expected_cats:
             if cat not in categories:
                 print(f"FAIL: Missing category {cat}")
