@@ -45,8 +45,10 @@ def run():
         assert header_email.is_visible()
         assert header_linkedin.is_visible()
 
-        # Verify Skills Categories
-        categories = page.locator('.skill-category h3').all_inner_texts()
+        # Verify Skills Categories (Navigate to Skills slide first)
+        page.locator('nav a[href="#skills"]').click()
+        page.wait_for_timeout(500) # wait for animation
+        categories = [cat.strip() for cat in page.locator('.skill-category h3').all_inner_texts()]
         print(f"Skill Categories Found: {categories}")
         expected_cats = ["Core Cybersecurity & Python", "Cloud & Infrastructure", "Business Intelligence & Data", "Supporting Skills"]
         for cat in expected_cats:
@@ -54,14 +56,18 @@ def run():
                 print(f"FAIL: Missing category {cat}")
             assert cat in categories
 
-        # Verify Unit Converter Project
+        # Verify Unit Converter Project (Navigate to Projects slide first)
+        page.locator('nav a[href="#projects"]').click()
+        page.wait_for_timeout(500) # wait for animation
         converter_card = page.locator('.project-card', has_text="Universal Unit Converter")
         business_case = converter_card.locator("text=Business Case")
         is_biz_case_visible = business_case.is_visible()
         print(f"Business Case Section Visible: {is_biz_case_visible}")
         assert is_biz_case_visible
 
-        # Verify Experience Bold Numbers
+        # Verify Experience Bold Numbers (Navigate to Experience slide first)
+        page.locator('nav a[href="#experience"]').click()
+        page.wait_for_timeout(500) # wait for animation
         # Check that we have <strong> tags in experience items
         bold_elements_count = page.locator('.experience-item strong').count()
         print(f"Count of bold elements in experience items: {bold_elements_count}")
