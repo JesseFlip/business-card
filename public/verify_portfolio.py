@@ -7,7 +7,7 @@ def run():
         page = browser.new_page()
 
         # Load the local index.html file
-        filepath = os.path.abspath('index.html')
+        filepath = os.path.abspath('public/index.html')
         page.goto(f"file://{filepath}")
 
         print("--- Verification Started ---")
@@ -21,7 +21,7 @@ def run():
         hero_text = page.locator('.text p').inner_text()
         print(f"Hero Role Text: {hero_text}")
         assert "Cybersecurity Analyst" in hero_text
-        assert "AWS Cloud Practitioner" in hero_text
+        # AWS Cloud Practitioner removed from the specific hero text p element based on the new design
 
         # Verify Resume Button
         resume_btn = page.locator('.resume-btn').first
@@ -48,7 +48,7 @@ def run():
         # Verify Skills Categories
         categories = page.locator('.skill-category h3').all_inner_texts()
         print(f"Skill Categories Found: {categories}")
-        expected_cats = ["Core Cybersecurity & Python", "Cloud & Infrastructure", "Business Intelligence & Data", "Supporting Skills"]
+        expected_cats = ["Security Operations", "Tools & Administration", "Scripting & Infrastructure"]
         for cat in expected_cats:
             if cat not in categories:
                 print(f"FAIL: Missing category {cat}")

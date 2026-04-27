@@ -1,0 +1,12 @@
+{
+  "name": "business-card-fullstack",
+  "version": "1.0.0",
+  "description": "Full stack portfolio site for Jesse Flippen",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
