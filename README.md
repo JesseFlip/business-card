@@ -31,11 +31,14 @@ A production-ready tool built to solve a specific business case in the spirits i
 ## 📂 Structure
 
 ```text
-├── index.html      # Main structure and content
-├── css/            # Custom styling and layout
-├── js/             # UI logic and state management
-└── assets/         # Images and PDF resume
-
+├── public/
+│   ├── index.html      # Main structure and content
+│   ├── styles.css      # Custom styling and layout
+│   ├── script.js       # UI logic and state management
+│   ├── images/         # Profile and project images
+│   └── assets/         # PDF resume and other documents
+├── server.js           # Express server for local development
+└── netlify.toml        # Netlify deployment configuration
 ```
 
 ## 🤝 Connect with Me
