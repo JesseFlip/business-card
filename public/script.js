@@ -1,46 +1,104 @@
 // JavaScript for interactivity
 console.log("Portfolio loaded");
 
-// Example: smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+let currentSlideIndex = 0;
+let slideInterval;
+const slideDuration = 8000; // 8 seconds per slide
+
+function initCarousel() {
+    const sections = Array.from(document.querySelectorAll('main > section'));
+    if (sections.length === 0) return;
+
+    // Set initial active state
+    sections.forEach((sec, idx) => {
+        if (idx === 0) {
+            sec.classList.add('active');
+        } else {
+            sec.classList.remove('active');
+        }
+    });
+
+    startAutoPlay();
+
+    // Pause on hover
+    const mainContainer = document.querySelector('main');
+    if (mainContainer) {
+        mainContainer.addEventListener('mouseenter', pauseAutoPlay);
+        mainContainer.addEventListener('mouseleave', startAutoPlay);
+    }
+}
+
+function showSlide(index) {
+    const sections = Array.from(document.querySelectorAll('main > section'));
+    if (index >= sections.length) {
+        currentSlideIndex = 0;
+    } else if (index < 0) {
+        currentSlideIndex = sections.length - 1;
+    } else {
+        currentSlideIndex = index;
+    }
+
+    sections.forEach((sec, idx) => {
+        if (idx === currentSlideIndex) {
+            sec.classList.add('active');
+            // reset scroll position for the section
+            sec.scrollTop = 0;
+
+            // Highlight nav
+            const activeId = sec.id;
+            document.querySelectorAll('.nav-links a').forEach(nav => {
+                nav.classList.remove('active');
+                if (nav.getAttribute('href') === '#' + activeId) {
+                    nav.classList.add('active');
+                }
+            });
+        } else {
+            sec.classList.remove('active');
+        }
+    });
+}
+
+function nextSlide() {
+    showSlide(currentSlideIndex + 1);
+}
+
+function startAutoPlay() {
+    if (slideInterval) clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, slideDuration);
+}
+
+function pauseAutoPlay() {
+    if (slideInterval) {
+        clearInterval(slideInterval);
+    }
+}
+
+// Carousel Navigation overrides
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const targetId = this.getAttribute('href');
 
-        // Ignore plain '#' links or empty links
         if (targetId === '#' || !targetId) {
             return;
         }
 
         e.preventDefault();
-        const targetElement = document.querySelector(targetId);
 
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth'
-            });
+        const sections = Array.from(document.querySelectorAll('main > section'));
+        const targetIndex = sections.findIndex(sec => '#' + sec.id === targetId);
+
+        if (targetIndex !== -1) {
+            showSlide(targetIndex);
+            // Reset timer on manual navigation
+            startAutoPlay();
         }
     });
 });
 
-// Intersection Observer for scroll animations
 document.addEventListener("DOMContentLoaded", function() {
     document.body.classList.add('js-enabled');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                // Optional: Stop observing once it's visible
-                // observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    });
 
-    const fadeElements = document.querySelectorAll('.fade-in-section');
-    fadeElements.forEach((el) => observer.observe(el));
+    initCarousel();
 
     // Fetch and render Credly badges dynamically
     fetchBadges();
