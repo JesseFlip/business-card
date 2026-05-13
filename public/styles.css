@@ -713,6 +713,26 @@ h2::after {
     border: 1px solid rgba(52, 199, 89, 0.3);
 }
 
+.project-badge.open-source {
+    background: rgba(175, 82, 222, 0.1);
+    color: #af52de;
+    border: 1px solid rgba(175, 82, 222, 0.3);
+}
+
+.project-card code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.85em;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--accent);
+}
+
+html[data-theme="dark"] .project-card code,
+html:not([data-theme="light"]) .project-card code {
+    background: rgba(255, 255, 255, 0.08);
+}
+
 .project-card ul {
     padding-left: 18px;
     margin: 8px 0 12px;

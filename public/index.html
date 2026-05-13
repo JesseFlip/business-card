@@ -306,6 +306,23 @@
           <p class="tech-stack"><strong>Stack:</strong> Python · Pandas · Regex · CSV/JSON parsing · Excel automation</p>
         </div>
         <div class="project-card">
+          <span class="project-badge open-source"><i class="fab fa-github" aria-hidden="true"></i> Open Source Contribution</span>
+          <h3>Windows Compatibility &amp; Subprocess Optimization — <em>voglster/lumbergh</em></h3>
+          <p><strong>Overview:</strong> External contributor to <code>lumbergh</code>, a Python backend tool. Improved cross-platform support and process reliability, with the maintainer manually merging the work into <code>main</code> after resolving complex rebase conflicts.</p>
+          <ul>
+            <li>Standardized all <code>subprocess.run</code> calls to UTF-8 encoding, eliminating character-set bugs across Windows and Linux environments</li>
+            <li>Implemented Windows-specific "kill path" using <code>taskkill /F /T</code> to properly terminate child processes and prevent memory leaks</li>
+            <li>Authored <code>test_windows_kill.py</code> — a dedicated unit test suite verifying cross-platform process termination with no regressions</li>
+            <li>Refactored <code>libtmux</code> server initialization to use a dynamic <code>psmux</code> fallback, increasing backend environment flexibility</li>
+            <li>Resolved complex merge conflicts caused by simultaneous upstream changes via interactive rebase</li>
+          </ul>
+          <p class="tech-stack"><strong>Stack:</strong> Python · subprocess API · libtmux · Git (rebase / conflict resolution) · Windows · Linux</p>
+          <div class="card-links">
+            <a href="https://github.com/voglster/lumbergh/pull/16" target="_blank" rel="noopener noreferrer">View Pull Request <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+            <a href="https://github.com/voglster/lumbergh" target="_blank" rel="noopener noreferrer">View Repo <i class="fab fa-github" aria-hidden="true"></i></a>
+          </div>
+        </div>
+        <div class="project-card">
           <h3>Universal Unit Converter</h3>
           <p><strong>Engineering Discipline:</strong> Built a production-ready web application from scratch — no frameworks, no templates — demonstrating clean software architecture and user-focused engineering.</p>
           <p><strong>Technical Highlight:</strong> Responsive state management in vanilla JavaScript for instant, bi-directional conversions across 8 distinct unit categories — no page reloads.</p>
