@@ -28,7 +28,10 @@
   <a href="#about" class="skip-link">Skip to main content</a>
   <header>
     <nav aria-label="Main navigation">
-      <ul class="nav-links">
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="https://github.com/JesseFlip" target="_blank" rel="noopener noreferrer" aria-label="Jesse Flippen on GitHub"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
         <li><a href="#certifications">Certifications</a></li>
@@ -41,6 +44,9 @@
         <li><a href="mailto:jss.flppn@gmail.com" aria-label="Send Jesse an email"><i class="fas fa-envelope" aria-hidden="true"></i> Email</a></li>
         <li><a href="https://www.linkedin.com/in/flippen/" target="_blank" rel="noopener noreferrer" aria-label="Jesse Flippen on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
       </ul>
+      <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+        <i class="fas fa-moon" id="dark-mode-icon" aria-hidden="true"></i>
+      </button>
     </nav>
   </header>
   <main>

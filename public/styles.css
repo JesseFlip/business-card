@@ -24,8 +24,9 @@
     --transition: 0.25s ease;
 }
 
+/* System preference dark mode (when no manual override is set) */
 @media (prefers-color-scheme: dark) {
-    :root {
+    html:not([data-theme="light"]) {
         --primary: #90caf9;
         --secondary: #64b5f6;
         --accent: #42a5f5;
@@ -40,10 +41,32 @@
         --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
         --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
     }
-
-    header, footer {
+    html:not([data-theme="light"]) header,
+    html:not([data-theme="light"]) footer {
         background-color: #0d1b2a;
     }
+}
+
+/* Manual dark mode override (set by toggle button, persisted via localStorage) */
+html[data-theme="dark"] {
+    --primary: #90caf9;
+    --secondary: #64b5f6;
+    --accent: #42a5f5;
+    --accent-dark: #1e88e5;
+    --bg: #121212;
+    --card-bg: #1e1e1e;
+    --text: #e0e0e0;
+    --text-light: #aaaaaa;
+    --border: #333333;
+    --success: #81c784;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] header,
+html[data-theme="dark"] footer {
+    background-color: #0d1b2a;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -95,11 +118,21 @@ img {
 header {
     background: var(--primary);
     color: white;
-    padding: 14px 0;
+    padding: 10px 16px;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .nav-links {
@@ -110,6 +143,7 @@ header {
     margin: 0;
     padding: 0;
     gap: 4px;
+    flex: 1;
 }
 
 .nav-links li {
@@ -132,6 +166,53 @@ header {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.12);
 }
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #cdd5e0;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+    flex-shrink: 0;
+}
+
+.dark-mode-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Hamburger button — hidden on desktop */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    flex-shrink: 0;
+}
+
+.hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #cdd5e0;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animated X when open */
+.hamburger.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.is-active span:nth-child(2) { opacity: 0; }
+.hamburger.is-active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ═══════════════════════════════════════════════════════
    Section Layout (Carousel Mode)
@@ -702,6 +783,49 @@ footer .social-links a:hover {
    Responsive
 ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
+    /* Nav: show hamburger, collapse links */
+    .hamburger {
+        display: flex;
+        order: -1;
+    }
+
+    header nav {
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 2px);
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        padding: 12px 0;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        flex: none;
+        width: 100%;
+    }
+
+    .nav-links.nav-open {
+        display: flex;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 10px 20px;
+        border-radius: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Content layouts */
     .card {
         flex-direction: column;
         text-align: center;
@@ -722,5 +846,17 @@ footer .social-links a:hover {
 
     .learning-grid {
         grid-template-columns: 1fr;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .text h1 {
+        font-size: 1.6rem;
+    }
+
+    .text p {
+        font-size: 0.95rem;
     }
 }
