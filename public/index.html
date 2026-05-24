@@ -39,16 +39,30 @@
         <li><a href="#learning">Learning</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#security-lab">Security Lab</a></li>
         <li><a href="#volunteer">Volunteer</a></li>
         <li><a href="#education">Education</a></li>
         <li><a href="mailto:jss.flppn@gmail.com" aria-label="Send Jesse an email"><i class="fas fa-envelope" aria-hidden="true"></i> Email</a></li>
         <li><a href="https://www.linkedin.com/in/flippen/" target="_blank" rel="noopener noreferrer" aria-label="Jesse Flippen on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
       </ul>
-      <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-        <i class="fas fa-moon" id="dark-mode-icon" aria-hidden="true"></i>
-      </button>
+      <div class="theme-toggle-group">
+        <button class="theme-toggle" id="theme-light" aria-label="Light theme" title="Light theme">
+          <i class="fas fa-sun" aria-hidden="true"></i>
+        </button>
+        <button class="theme-toggle" id="theme-dark" aria-label="Dark theme" title="Dark theme">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </button>
+        <button class="theme-toggle" id="theme-terminal" aria-label="Terminal theme" title="Terminal theme">
+          <i class="fas fa-terminal" aria-hidden="true"></i>
+        </button>
+      </div>
     </nav>
   </header>
+
+  <!-- Security Log Ticker (visible in terminal mode) -->
+  <div class="security-log-ticker" id="security-log-ticker" style="display: none;">
+    <div class="log-ticker-content" id="log-ticker-content"></div>
+  </div>
   <main>
     <!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
     <section id="about" class="hero-section fade-in-section">
@@ -371,6 +385,87 @@
       </div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════════ SECURITY LAB ═══════════════════════════════ -->
+    <section id="security-lab" class="fade-in-section">
+      <h2>Security Lab & Tools</h2>
+      <p class="section-sub">Interactive security utilities and demonstrations — built with vanilla JavaScript. Try terminal mode for the full experience.</p>
+
+      <!-- Interactive Command Terminal -->
+      <div class="command-terminal">
+        <div class="terminal-header">
+          <div class="terminal-title">
+            <i class="fas fa-terminal" aria-hidden="true"></i>
+            Interactive Terminal
+          </div>
+          <div class="terminal-buttons">
+            <button class="terminal-btn close" aria-label="Close terminal"></button>
+            <button class="terminal-btn minimize" aria-label="Minimize terminal"></button>
+            <button class="terminal-btn maximize" aria-label="Maximize terminal"></button>
+          </div>
+        </div>
+        <div class="terminal-output" id="terminal-output">
+          <div class="terminal-line">
+            <span class="terminal-prompt">user@jflip-sec:~$</span>
+            <span class="terminal-command"> welcome</span>
+          </div>
+          <div class="terminal-response">
+            Welcome to Jesse Flippen's Security Operations Portfolio!<br>
+            Type 'help' to see available commands.
+          </div>
+        </div>
+        <div class="terminal-input-group">
+          <span class="terminal-input-label">user@jflip-sec:~$</span>
+          <input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+        </div>
+      </div>
+
+      <!-- Security Tools Grid -->
+      <div class="terminal-tools-grid">
+        <!-- IP/Browser Auditing Tool -->
+        <div class="terminal-tool">
+          <div class="tool-header">
+            <i class="fas fa-network-wired" aria-hidden="true"></i>
+            Network Footprint Scanner
+          </div>
+          <p class="tool-description">
+            See your public network footprint. This tool queries your IP address, location, and browser details using public APIs. No data is stored.
+          </p>
+          <div id="ip-info-display" class="ip-info-grid">
+            <div class="loading-indicator">
+              <i class="fas fa-circle-notch" aria-hidden="true"></i> Scanning...
+            </div>
+          </div>
+          <div class="tool-buttons">
+            <button class="tool-btn" id="refresh-ip-info">
+              <i class="fas fa-sync-alt" aria-hidden="true"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Base64/Hex Decoder -->
+        <div class="terminal-tool">
+          <div class="tool-header">
+            <i class="fas fa-code" aria-hidden="true"></i>
+            Base64 / Hex Decoder
+          </div>
+          <p class="tool-description">
+            Encode or decode Base64 and Hex strings. Essential for log analysis, reverse engineering, and CTF challenges.
+          </p>
+          <label for="decoder-input" style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 5px; display: block;">Input:</label>
+          <textarea class="terminal-input-area" id="decoder-input" placeholder="Paste encoded string here..."></textarea>
+          <label for="decoder-output" style="color: var(--text-light); font-size: 0.85rem; margin: 10px 0 5px; display: block;">Output:</label>
+          <textarea class="terminal-output-area" id="decoder-output" placeholder="Decoded output..." readonly></textarea>
+          <div class="tool-buttons">
+            <button class="tool-btn" id="decode-base64">Base64 Decode</button>
+            <button class="tool-btn" id="encode-base64">Base64 Encode</button>
+            <button class="tool-btn" id="decode-hex">Hex Decode</button>
+            <button class="tool-btn" id="clear-decoder">Clear</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══════════════════════════════ VOLUNTEER ═══════════════════════════════ -->
     <section id="volunteer" class="fade-in-section">
       <h2>Volunteer &amp; Organizations</h2>
