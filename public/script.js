@@ -165,6 +165,80 @@ document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
 });
 
 // ═══════════════════════════════════════════════════════
+// GitHub repository fetcher — displays recent projects
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Fetches recent GitHub repositories and displays them
+ * in a clean grid format with language, stars, and update info.
+ */
+async function fetchGitHubRepos() {
+    const repoGrid = document.getElementById('github-repos-grid');
+    if (!repoGrid) return;
+
+    try {
+        const response = await fetch('https://api.github.com/users/JesseFlip/repos?sort=updated&per_page=12');
+        if (!response.ok) throw new Error('Failed to fetch repositories');
+
+        const repos = await response.json();
+
+        // Clear loading spinner
+        repoGrid.innerHTML = '';
+
+        // Filter out forks unless they have significant activity
+        const filteredRepos = repos.filter(repo => !repo.fork || repo.stargazers_count > 0);
+
+        // Take top 12 most recently updated
+        const recentRepos = filteredRepos.slice(0, 12);
+
+        recentRepos.forEach(repo => {
+            const card = document.createElement('div');
+            card.className = 'github-repo-card';
+
+            // Language badge
+            let languageBadge = '';
+            if (repo.language) {
+                const langClass = repo.language.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                languageBadge = `<span class="language-badge lang-${langClass}">${repo.language}</span>`;
+            }
+
+            // Format last update date
+            const lastUpdate = new Date(repo.updated_at);
+            const now = new Date();
+            const diffDays = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24));
+            let updateText;
+            if (diffDays === 0) updateText = 'Updated today';
+            else if (diffDays === 1) updateText = 'Updated yesterday';
+            else if (diffDays < 7) updateText = `Updated ${diffDays} days ago`;
+            else if (diffDays < 30) updateText = `Updated ${Math.floor(diffDays / 7)} weeks ago`;
+            else if (diffDays < 365) updateText = `Updated ${Math.floor(diffDays / 30)} months ago`;
+            else updateText = `Updated ${Math.floor(diffDays / 365)} years ago`;
+
+            card.innerHTML = `
+                <div class="repo-header">
+                    <h4><a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github" aria-hidden="true"></i> ${repo.name}
+                    </a></h4>
+                    ${languageBadge}
+                </div>
+                <p class="repo-description">${repo.description || 'No description provided'}</p>
+                <div class="repo-meta">
+                    ${repo.stargazers_count > 0 ? `<span><i class="fas fa-star" aria-hidden="true"></i> ${repo.stargazers_count}</span>` : ''}
+                    ${repo.forks_count > 0 ? `<span><i class="fas fa-code-branch" aria-hidden="true"></i> ${repo.forks_count}</span>` : ''}
+                    <span class="repo-updated"><i class="fas fa-clock" aria-hidden="true"></i> ${updateText}</span>
+                </div>
+            `;
+
+            repoGrid.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error('GitHub repository fetch failed:', error);
+        repoGrid.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Unable to load repositories. <a href="https://github.com/JesseFlip?tab=repositories" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>';
+    }
+}
+
+// ═══════════════════════════════════════════════════════
 // Credly badge fetcher — dynamically prepends earned badges
 // ═══════════════════════════════════════════════════════
 
@@ -236,4 +310,5 @@ document.addEventListener('DOMContentLoaded', function () {
     initMobileNav();
     initCarousel();
     fetchBadges();
+    fetchGitHubRepos();
 });
