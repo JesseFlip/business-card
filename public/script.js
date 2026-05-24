@@ -1,41 +1,48 @@
 // ═══════════════════════════════════════════════════════
-// Dark Mode — manual toggle with localStorage persistence
-// Falls back to prefers-color-scheme when no preference saved
+// Theme System — light, dark, and terminal modes
 // ═══════════════════════════════════════════════════════
 
 /**
- * Initialises the dark/light mode toggle.
- * Reads saved preference from localStorage; applies `data-theme` attribute
- * on <html>. CSS media query handles the system-preference default case.
+ * Initialises the theme toggle system with three modes:
+ * light, dark, and terminal (hacker aesthetic).
  */
-function initDarkMode() {
-    const btn  = document.getElementById('dark-mode-toggle');
-    const icon = document.getElementById('dark-mode-icon');
-    if (!btn) return;
+function initThemeSystem() {
+    const lightBtn = document.getElementById('theme-light');
+    const darkBtn = document.getElementById('theme-dark');
+    const terminalBtn = document.getElementById('theme-terminal');
+    const logTicker = document.getElementById('security-log-ticker');
+
+    if (!lightBtn || !darkBtn || !terminalBtn) return;
 
     const applyTheme = (theme) => {
         document.documentElement.setAttribute('data-theme', theme);
-        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+
+        // Update active button states
+        lightBtn.classList.toggle('active', theme === 'light');
+        darkBtn.classList.toggle('active', theme === 'dark');
+        terminalBtn.classList.toggle('active', theme === 'terminal');
+
+        // Show/hide security log ticker in terminal mode
+        if (logTicker) {
+            logTicker.style.display = theme === 'terminal' ? 'block' : 'none';
+        }
+
+        localStorage.setItem('theme', theme);
     };
 
     // Apply saved preference on page load
-    const saved = localStorage.getItem('darkMode');
-    if (saved === 'dark' || saved === 'light') {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark' || saved === 'terminal') {
         applyTheme(saved);
+    } else {
+        // Default to light mode
+        applyTheme('light');
     }
-    // No saved value → CSS media query handles it automatically
 
-    btn.addEventListener('click', () => {
-        // Determine what the effective current mode is
-        const currentAttr = document.documentElement.getAttribute('data-theme');
-        const systemDark  = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark      = currentAttr === 'dark' || (currentAttr !== 'light' && systemDark);
-
-        const next = isDark ? 'light' : 'dark';
-        applyTheme(next);
-        localStorage.setItem('darkMode', next);
-    });
+    // Theme button click handlers
+    lightBtn.addEventListener('click', () => applyTheme('light'));
+    darkBtn.addEventListener('click', () => applyTheme('dark'));
+    terminalBtn.addEventListener('click', () => applyTheme('terminal'));
 }
 
 // ═══════════════════════════════════════════════════════
@@ -302,13 +309,336 @@ async function fetchBadges() {
 }
 
 // ═══════════════════════════════════════════════════════
+// Interactive Command Terminal
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Implements the interactive command terminal with various commands.
+ */
+function initCommandTerminal() {
+    const input = document.getElementById('terminal-input');
+    const output = document.getElementById('terminal-output');
+    if (!input || !output) return;
+
+    const commands = {
+        help: () => `Available commands:
+  help        - Show this help message
+  about       - Learn about Jesse Flippen
+  skills      - Display technical skills
+  certifications - Show certifications
+  projects    - List key projects
+  contact     - Get contact information
+  clear       - Clear terminal output
+  whoami      - Display current user
+  pwd         - Print working directory
+  ls          - List directory contents
+  sudo rm -rf / - Don't try this at home 😉`,
+
+        about: () => `Jesse Flippen - Security Operations Specialist
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 Targeting SOC Analyst Roles
+🔒 AWS Certified Cloud Practitioner
+🛡️ CompTIA Security+ Candidate
+📊 Splunk SIEM & Threat Detection
+🐍 Python Automation Expert
+📍 Dallas, TX
+
+Transitioning to cybersecurity after building Python automation
+systems in high-stakes enterprise environments.`,
+
+        skills: () => `Core Technical Skills:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛡️  Security Operations
+    • SIEM / Log Analysis
+    • Splunk SPL Query Writing
+    • Incident Triage & Response
+    • Threat Detection & Correlation
+    • MITRE ATT&CK Framework
+
+☁️  Cloud Security
+    • AWS IAM & Security Groups
+    • CloudTrail & VPC Flow Logs
+    • Cloud Threat Modeling
+
+🐍  Automation
+    • Python (log parsing, automation)
+    • Bash Scripting
+    • FastAPI
+    • SSH Key Management`,
+
+        certifications: () => `Certifications & Credentials:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ AWS Certified Cloud Practitioner (CLF-C02) - Jan 2026
+📚 CompTIA Security+ (SY0-701) - In Progress
+📚 Splunk Core Certified User - In Progress
+📚 HTB Certified Junior Cyber Analyst - Expected Sep 2026
+📚 CompTIA Linux+ - Expected Aug 2026
+✅ Google AI Essentials - Completed`,
+
+        projects: () => `Featured Projects:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Tailscale Raspberry Pi Security Wrap
+   🔒 Hardened infrastructure with UFW, Fail2ban
+   📊 Real-time Splunk monitoring & threat detection
+
+2. Enterprise Log Parser & Anomaly Reporter
+   🐍 Python automation for log analysis
+   🔍 Outlier detection & anomaly flagging
+
+3. Lumbergh Open Source Contribution
+   🐛 Windows compatibility & subprocess optimization
+   ✅ Merged to main branch
+
+View all projects: https://github.com/JesseFlip`,
+
+        contact: () => `Contact Information:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📧 Email: jss.flppn@gmail.com
+💼 LinkedIn: linkedin.com/in/flippen
+🐙 GitHub: github.com/JesseFlip
+🏆 Credly: credly.com/users/jflip
+📍 Location: Dallas, TX`,
+
+        clear: () => 'CLEAR_SCREEN',
+
+        whoami: () => 'user',
+
+        pwd: () => '/home/user/portfolio',
+
+        ls: () => `about.txt
+certifications/
+contact.txt
+projects/
+skills/
+README.md`,
+
+        'sudo rm -rf /': () => `Permission denied. Nice try, hacker! 😎
+This is a portfolio site, not a production server.
+But I appreciate your sense of humor!`,
+    };
+
+    const addLine = (prompt, command, response) => {
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        line.innerHTML = `
+            <span class="terminal-prompt">${prompt}</span>
+            <span class="terminal-command"> ${command}</span>
+        `;
+        output.appendChild(line);
+
+        if (response && response !== 'CLEAR_SCREEN') {
+            const responseLine = document.createElement('div');
+            responseLine.className = 'terminal-response';
+            responseLine.textContent = response;
+            output.appendChild(responseLine);
+        }
+
+        output.scrollTop = output.scrollHeight;
+    };
+
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const command = input.value.trim().toLowerCase();
+            const response = commands[command] ? commands[command]() : `Command not found: ${command}. Type 'help' for available commands.`;
+
+            if (response === 'CLEAR_SCREEN') {
+                output.innerHTML = '';
+            } else {
+                addLine('user@jflip-sec:~$', input.value, response);
+            }
+
+            input.value = '';
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════
+// Security Log Ticker
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Generates and displays a live scrolling security log ticker.
+ */
+function initSecurityLogTicker() {
+    const ticker = document.getElementById('log-ticker-content');
+    if (!ticker) return;
+
+    const logMessages = [
+        { level: 'info', message: 'Tailscale Pi Wrap running smoothly. 0 unauthorized attempts intercepted.' },
+        { level: 'success', message: 'Log Parser automated reports delivered successfully.' },
+        { level: 'info', message: 'Splunk dashboard updated. All threat indicators nominal.' },
+        { level: 'success', message: 'UFW firewall rules validated. All ports secure.' },
+        { level: 'warning', message: 'GitHub repo fetch complete. 12 projects indexed.' },
+        { level: 'info', message: 'SSH key authentication active. Password auth disabled.' },
+        { level: 'success', message: 'Fail2ban monitoring active. 0 banned IPs in last 24h.' },
+        { level: 'info', message: 'Python automation scripts running on schedule.' },
+        { level: 'critical', message: 'Coffee levels low. Initiating reorder protocol.' },
+        { level: 'success', message: 'AWS CloudTrail logs forwarded to SIEM successfully.' },
+    ];
+
+    const timestamp = () => new Date().toISOString().split('T')[0];
+
+    // Duplicate messages for seamless loop
+    const allLogs = [...logMessages, ...logMessages];
+
+    allLogs.forEach(log => {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `
+            <span class="log-level ${log.level}">[${log.level.toUpperCase()}]</span>
+            <span>${timestamp()}:</span>
+            <span>${log.message}</span>
+        `;
+        ticker.appendChild(entry);
+    });
+}
+
+// ═══════════════════════════════════════════════════════
+// IP/Browser Auditing Tool
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Fetches and displays the visitor's network footprint.
+ */
+async function fetchIPInfo() {
+    const display = document.getElementById('ip-info-display');
+    if (!display) return;
+
+    try {
+        display.innerHTML = '<div class="loading-indicator"><i class="fas fa-circle-notch" aria-hidden="true"></i> Scanning...</div>';
+
+        const response = await fetch('https://ipapi.co/json/');
+        if (!response.ok) throw new Error('Failed to fetch IP info');
+
+        const data = await response.json();
+
+        const userAgent = navigator.userAgent;
+        const browserInfo = {
+            platform: navigator.platform,
+            language: navigator.language,
+            cookiesEnabled: navigator.cookieEnabled,
+            doNotTrack: navigator.doNotTrack || 'Not set',
+        };
+
+        display.innerHTML = `
+            <div class="ip-info-label">Public IP:</div>
+            <div class="ip-info-value">${data.ip}</div>
+
+            <div class="ip-info-label">Location:</div>
+            <div class="ip-info-value">${data.city}, ${data.region}, ${data.country_name}</div>
+
+            <div class="ip-info-label">ISP:</div>
+            <div class="ip-info-value">${data.org}</div>
+
+            <div class="ip-info-label">Timezone:</div>
+            <div class="ip-info-value">${data.timezone}</div>
+
+            <div class="ip-info-label">Browser:</div>
+            <div class="ip-info-value">${userAgent}</div>
+
+            <div class="ip-info-label">Platform:</div>
+            <div class="ip-info-value">${browserInfo.platform}</div>
+
+            <div class="ip-info-label">Language:</div>
+            <div class="ip-info-value">${browserInfo.language}</div>
+
+            <div class="ip-info-label">Do Not Track:</div>
+            <div class="ip-info-value">${browserInfo.doNotTrack}</div>
+        `;
+
+        // Add warning message
+        const warning = document.createElement('div');
+        warning.style.cssText = 'grid-column: 1 / -1; margin-top: 15px; padding: 10px; background: rgba(255, 159, 10, 0.1); border: 1px solid rgba(255, 159, 10, 0.3); border-radius: 4px; font-size: 0.85rem; color: var(--text-light);';
+        warning.innerHTML = '<i class="fas fa-shield-alt" aria-hidden="true"></i> Your data is not being stored. This is a client-side demonstration using public APIs.';
+        display.appendChild(warning);
+
+    } catch (error) {
+        console.error('Failed to fetch IP info:', error);
+        display.innerHTML = `<div class="ip-info-value" style="grid-column: 1 / -1; color: #ff3b30;">
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Unable to fetch network information. Please try again later.
+        </div>`;
+    }
+}
+
+function initIPAuditor() {
+    const refreshBtn = document.getElementById('refresh-ip-info');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', fetchIPInfo);
+    }
+    fetchIPInfo(); // Auto-load on page load
+}
+
+// ═══════════════════════════════════════════════════════
+// Base64/Hex Decoder Utility
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Implements Base64 and Hex encoding/decoding functionality.
+ */
+function initDecoder() {
+    const input = document.getElementById('decoder-input');
+    const output = document.getElementById('decoder-output');
+    const decodeBase64Btn = document.getElementById('decode-base64');
+    const encodeBase64Btn = document.getElementById('encode-base64');
+    const decodeHexBtn = document.getElementById('decode-hex');
+    const clearBtn = document.getElementById('clear-decoder');
+
+    if (!input || !output) return;
+
+    decodeBase64Btn?.addEventListener('click', () => {
+        try {
+            const decoded = atob(input.value.trim());
+            output.value = decoded;
+        } catch (error) {
+            output.value = 'Error: Invalid Base64 string';
+        }
+    });
+
+    encodeBase64Btn?.addEventListener('click', () => {
+        try {
+            const encoded = btoa(input.value);
+            output.value = encoded;
+        } catch (error) {
+            output.value = 'Error: Unable to encode string';
+        }
+    });
+
+    decodeHexBtn?.addEventListener('click', () => {
+        try {
+            const hex = input.value.trim().replace(/\s/g, '');
+            if (!/^[0-9A-Fa-f]*$/.test(hex)) {
+                throw new Error('Invalid hex string');
+            }
+            let str = '';
+            for (let i = 0; i < hex.length; i += 2) {
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            output.value = str;
+        } catch (error) {
+            output.value = 'Error: Invalid hexadecimal string';
+        }
+    });
+
+    clearBtn?.addEventListener('click', () => {
+        input.value = '';
+        output.value = '';
+    });
+}
+
+// ═══════════════════════════════════════════════════════
 // Boot
 // ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.add('js-enabled');
-    initDarkMode();
+    initThemeSystem();
     initMobileNav();
     initCarousel();
     fetchBadges();
     fetchGitHubRepos();
+
+    // Initialize terminal features
+    initCommandTerminal();
+    initSecurityLogTicker();
+    initIPAuditor();
+    initDecoder();
 });

@@ -69,6 +69,90 @@ html[data-theme="dark"] footer {
     background-color: #0d1b2a;
 }
 
+/* Terminal theme override (hacker aesthetic) */
+html[data-theme="terminal"] {
+    --primary: #39ff14;
+    --secondary: #1bff00;
+    --accent: #39ff14;
+    --accent-dark: #2acc0f;
+    --bg: #0a0a0a;
+    --card-bg: #121212;
+    --text: #39ff14;
+    --text-light: #1bff00;
+    --border: #39ff14;
+    --success: #39ff14;
+    --shadow-sm: 0 0 10px rgba(57, 255, 20, 0.1);
+    --shadow-md: 0 0 20px rgba(57, 255, 20, 0.2);
+    --shadow-lg: 0 0 30px rgba(57, 255, 20, 0.3);
+}
+
+html[data-theme="terminal"] body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+html[data-theme="terminal"] header,
+html[data-theme="terminal"] footer {
+    background-color: #000000;
+    border-bottom: 1px solid var(--accent);
+}
+
+html[data-theme="terminal"] h1,
+html[data-theme="terminal"] h2,
+html[data-theme="terminal"] h3,
+html[data-theme="terminal"] h4 {
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+}
+
+html[data-theme="terminal"] h2::before {
+    content: "user@jflip-sec:~$ ";
+    color: #ffffff;
+    text-shadow: none;
+}
+
+html[data-theme="terminal"] .card,
+html[data-theme="terminal"] .project-card,
+html[data-theme="terminal"] .github-repo-card,
+html[data-theme="terminal"] .cert-card,
+html[data-theme="terminal"] .learning-card,
+html[data-theme="terminal"] .experience-item,
+html[data-theme="terminal"] .education-item {
+    border: 1px solid var(--accent);
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-sm);
+}
+
+html[data-theme="terminal"] .card:hover,
+html[data-theme="terminal"] .project-card:hover,
+html[data-theme="terminal"] .github-repo-card:hover,
+html[data-theme="terminal"] .cert-card:hover,
+html[data-theme="terminal"] .learning-card:hover {
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+    border-color: var(--accent);
+}
+
+html[data-theme="terminal"] a {
+    color: var(--accent);
+}
+
+html[data-theme="terminal"] a:hover {
+    text-decoration: underline;
+}
+
+html[data-theme="terminal"] .nav-links a {
+    color: var(--text);
+}
+
+html[data-theme="terminal"] .resume-btn {
+    background-color: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+}
+
+html[data-theme="terminal"] .resume-btn:hover {
+    background-color: var(--accent);
+    color: #000000;
+}
+
 /* ═══════════════════════════════════════════════════════
    Reset & Base
 ═══════════════════════════════════════════════════════ */
@@ -171,7 +255,40 @@ header nav {
     background: rgba(255, 255, 255, 0.12);
 }
 
-/* Dark mode toggle button */
+/* Theme toggle buttons */
+.theme-toggle-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.theme-toggle {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #cdd5e0;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.theme-toggle.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Legacy support for dark mode toggle */
 .dark-mode-toggle {
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -1157,4 +1274,322 @@ footer .social-links a:hover {
     .text p {
         font-size: 0.95rem;
     }
+
+    .terminal-tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .terminal-input-area,
+    .terminal-output-area {
+        min-height: 150px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Terminal Theme Interactive Components
+═══════════════════════════════════════════════════════ */
+
+/* Security Log Ticker */
+.security-log-ticker {
+    background: var(--card-bg);
+    border-top: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding: 10px 0;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+}
+
+/* Add padding to main content when ticker is visible */
+html[data-theme="terminal"] main {
+    padding-bottom: 60px;
+}
+
+html[data-theme="terminal"] footer {
+    margin-bottom: 50px;
+}
+
+.log-ticker-content {
+    display: flex;
+    animation: scroll-left 30s linear infinite;
+    white-space: nowrap;
+}
+
+.log-entry {
+    padding: 0 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.log-level {
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+
+.log-level.info {
+    background: rgba(10, 132, 255, 0.2);
+    color: #42a5f5;
+}
+
+.log-level.success {
+    background: rgba(52, 199, 89, 0.2);
+    color: #34c759;
+}
+
+.log-level.warning {
+    background: rgba(255, 159, 10, 0.2);
+    color: #ff9f0a;
+}
+
+.log-level.critical {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+}
+
+html[data-theme="terminal"] .log-level.info,
+html[data-theme="terminal"] .log-level.success {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Command Terminal */
+.command-terminal {
+    background: var(--card-bg);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 30px 0;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: var(--shadow-md);
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.terminal-title {
+    color: var(--accent);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.terminal-btn.close { background: #ff5f56; }
+.terminal-btn.minimize { background: #ffbd2e; }
+.terminal-btn.maximize { background: #27c93f; }
+
+.terminal-output {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.terminal-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.terminal-line {
+    margin-bottom: 8px;
+}
+
+.terminal-prompt {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.terminal-command {
+    color: var(--text);
+}
+
+.terminal-response {
+    color: var(--text-light);
+    margin-left: 20px;
+}
+
+.terminal-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.terminal-input-label {
+    color: var(--accent);
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.terminal-input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px;
+    color: var(--text);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+}
+
+.terminal-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+}
+
+/* Terminal Tools Grid */
+.terminal-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    margin: 30px 0;
+}
+
+.terminal-tool {
+    background: var(--card-bg);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: var(--shadow-md);
+}
+
+.tool-header {
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tool-description {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.terminal-input-area,
+.terminal-output-area {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    color: var(--text);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+}
+
+.terminal-input-area:focus,
+.terminal-output-area:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+}
+
+.tool-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.tool-btn {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    transition: all var(--transition);
+}
+
+.tool-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.ip-info-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.ip-info-label {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.ip-info-value {
+    color: var(--text);
+    word-break: break-all;
+}
+
+.loading-indicator {
+    color: var(--accent);
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-indicator i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
