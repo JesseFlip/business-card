@@ -178,16 +178,57 @@ document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
 /**
  * Fetches recent GitHub repositories and displays them
  * in a clean grid format with language, stars, and update info.
+ * Implements 5-minute client-side caching to reduce API calls.
  */
 async function fetchGitHubRepos() {
     const repoGrid = document.getElementById('github-repos-grid');
     if (!repoGrid) return;
 
+    const CACHE_KEY = 'github_repos_cache';
+    const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
     try {
+        // Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp < CACHE_DURATION) {
+                displayRepos(data, repoGrid);
+                return;
+            }
+        }
+
         const response = await fetch('https://api.github.com/users/JesseFlip/repos?sort=updated&per_page=12');
+
+        // Check for rate limiting
+        if (response.status === 403 || response.status === 429) {
+            const resetTime = response.headers.get('X-RateLimit-Reset');
+            const resetDate = resetTime ? new Date(resetTime * 1000).toLocaleTimeString() : 'later';
+            throw new Error(`GitHub API rate limit reached. Resets at ${resetDate}.`);
+        }
+
         if (!response.ok) throw new Error('Failed to fetch repositories');
 
         const repos = await response.json();
+
+        // Cache the results
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+            data: repos,
+            timestamp: Date.now()
+        }));
+
+        displayRepos(repos, repoGrid);
+
+    } catch (error) {
+        console.error('GitHub repository fetch failed:', error);
+        repoGrid.innerHTML = `<p class="error-message"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> ${error.message} <a href="https://github.com/JesseFlip?tab=repositories" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>`;
+    }
+}
+
+/**
+ * Displays GitHub repositories in the grid
+ */
+function displayRepos(repos, repoGrid) {
 
         // Clear loading spinner
         repoGrid.innerHTML = '';
@@ -238,11 +279,6 @@ async function fetchGitHubRepos() {
 
             repoGrid.appendChild(card);
         });
-
-    } catch (error) {
-        console.error('GitHub repository fetch failed:', error);
-        repoGrid.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Unable to load repositories. <a href="https://github.com/JesseFlip?tab=repositories" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>';
-    }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -611,7 +647,7 @@ function initDecoder() {
             }
             let str = '';
             for (let i = 0; i < hex.length; i += 2) {
-                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                str += String.fromCharCode(parseInt(hex.substring(i, i + 2), 16));
             }
             output.value = str;
         } catch (error) {
