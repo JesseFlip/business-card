@@ -429,11 +429,14 @@ View all projects: https://github.com/JesseFlip`,
 
         contact: () => `Contact Information:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📧 Email: jss.flppn@gmail.com
 💼 LinkedIn: linkedin.com/in/flippen
 🐙 GitHub: github.com/JesseFlip
 🏆 Credly: credly.com/users/jflip
-📍 Location: Dallas, TX`,
+📍 Location: Dallas, TX
+
+🔒 Privacy First: I prefer to connect via LinkedIn for
+   professional networking. Send me a connection request
+   and let me know how we can collaborate!`,
 
         clear: () => 'CLEAR_SCREEN',
 

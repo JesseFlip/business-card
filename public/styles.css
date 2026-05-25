@@ -740,6 +740,85 @@ h2::after {
 }
 
 /* ═══════════════════════════════════════════════════════
+   Connect Section
+═══════════════════════════════════════════════════════ */
+.connect-container {
+    max-width: 700px;
+    margin: 40px auto 0;
+}
+
+.connect-card {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--accent);
+    text-align: center;
+}
+
+.connect-icon {
+    font-size: 4rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.connect-card h3 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.connect-card p {
+    color: var(--text);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.connect-cta {
+    background: rgba(10, 132, 255, 0.05);
+    padding: 20px;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--accent);
+    margin: 30px 0;
+}
+
+.linkedin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #0077b5;
+    color: white;
+    padding: 16px 32px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 20px 0;
+    transition: background var(--transition), transform var(--transition);
+    box-shadow: var(--shadow-md);
+}
+
+.linkedin-btn:hover {
+    background-color: #005885;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.privacy-note {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.privacy-note i {
+    color: var(--accent);
+    margin-right: 5px;
+}
+
+/* ═══════════════════════════════════════════════════════
    Education
 ═══════════════════════════════════════════════════════ */
 .education-item {
@@ -1282,6 +1361,23 @@ footer .social-links a:hover {
     .terminal-input-area,
     .terminal-output-area {
         min-height: 150px;
+    }
+
+    .connect-card {
+        padding: 30px 20px;
+    }
+
+    .connect-icon {
+        font-size: 3rem;
+    }
+
+    .connect-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .linkedin-btn {
+        padding: 14px 24px;
+        font-size: 1rem;
     }
 }
 
