@@ -90,6 +90,7 @@ function initMobileNav() {
 
 let currentSlideIndex = 0;
 let slideInterval;
+let userPaused = localStorage.getItem('autoplay') === 'paused';
 const slideDuration = 8000; // ms per slide
 
 /**
@@ -105,12 +106,53 @@ function initCarousel() {
     });
 
     startAutoPlay();
+    initAutoplayToggle();
 
     const mainContainer = document.querySelector('main');
     if (mainContainer) {
         mainContainer.addEventListener('mouseenter', pauseAutoPlay);
         mainContainer.addEventListener('mouseleave', startAutoPlay);
     }
+}
+
+/**
+ * Wires the autoplay pause/resume button. Persists the user's
+ * choice in localStorage so it survives reloads.
+ */
+function initAutoplayToggle() {
+    const btn = document.getElementById('autoplay-toggle');
+    if (!btn) return;
+
+    const render = () => {
+        const icon = btn.querySelector('i');
+        if (userPaused) {
+            if (icon) icon.className = 'fas fa-play';
+            btn.setAttribute('aria-label', 'Resume auto-scroll');
+            btn.setAttribute('title', 'Resume auto-scroll');
+            btn.setAttribute('aria-pressed', 'true');
+            btn.classList.add('active');
+        } else {
+            if (icon) icon.className = 'fas fa-pause';
+            btn.setAttribute('aria-label', 'Pause auto-scroll');
+            btn.setAttribute('title', 'Pause auto-scroll');
+            btn.setAttribute('aria-pressed', 'false');
+            btn.classList.remove('active');
+        }
+    };
+
+    render();
+    if (userPaused) pauseAutoPlay();
+
+    btn.addEventListener('click', () => {
+        userPaused = !userPaused;
+        localStorage.setItem('autoplay', userPaused ? 'paused' : 'playing');
+        render();
+        if (userPaused) {
+            pauseAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    });
 }
 
 /**
@@ -147,6 +189,7 @@ function showSlide(index) {
 function nextSlide()    { showSlide(currentSlideIndex + 1); }
 function startAutoPlay() {
     if (slideInterval) clearInterval(slideInterval);
+    if (userPaused) return;
     slideInterval = setInterval(nextSlide, slideDuration);
 }
 function pauseAutoPlay() {
@@ -373,8 +416,8 @@ function initCommandTerminal() {
         about: () => `Jesse Flippen - Security Operations Specialist
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎯 Targeting SOC Analyst Roles
+🛡️ CompTIA Security+ Certified
 🔒 AWS Certified Cloud Practitioner
-🛡️ CompTIA Security+ Candidate
 📊 Splunk SIEM & Threat Detection
 🐍 Python Automation Expert
 📍 Dallas, TX
@@ -404,8 +447,8 @@ systems in high-stakes enterprise environments.`,
 
         certifications: () => `Certifications & Credentials:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ CompTIA Security+ (SY0-701) - Jun 2026
 ✅ AWS Certified Cloud Practitioner (CLF-C02) - Jan 2026
-📚 CompTIA Security+ (SY0-701) - In Progress
 📚 Splunk Core Certified User - In Progress
 📚 HTB Certified Junior Cyber Analyst - Expected Sep 2026
 📚 CompTIA Linux+ - Expected Aug 2026

@@ -288,6 +288,13 @@ header nav {
     border-color: rgba(255, 255, 255, 0.8);
 }
 
+.toggle-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
 /* Legacy support for dark mode toggle */
 .dark-mode-toggle {
     background: none;
