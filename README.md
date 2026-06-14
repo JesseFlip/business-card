@@ -1,5 +1,8 @@
 # Jesse Flippen | SOC Analyst & Security Operations Specialist
 
+[![CI](https://github.com/JesseFlip/business-card/actions/workflows/ci.yml/badge.svg)](https://github.com/JesseFlip/business-card/actions/workflows/ci.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/site/deploy-status)](https://app.netlify.com/sites/jflip/deploys)
+
 Portfolio website for Jesse Flippen — Security Operations Specialist targeting SOC Analyst roles. Built entirely in vanilla HTML, CSS, and JavaScript with no framework dependencies.
 
 **Live Site:** [jflip.netlify.app](https://jflip.netlify.app/)
