@@ -151,9 +151,36 @@
           <li>Self-directed learner: Hack The Box, TryHackMe, LabEx, and Splunk training — used daily to build real blue-team skills.</li>
           <li>Proven track record translating complex technical findings into business-risk language for VP and director-level audiences.</li>
         </ul>
-        <a href="assets/jesse-flippen-resume.pdf" download class="resume-btn">
-          <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Resume (PDF)
-        </a>
+        <div class="resume-request">
+          <button type="button" class="resume-btn" id="resume-request-toggle" aria-expanded="false" aria-controls="resume-request-form">
+            <i class="fas fa-file-pdf" aria-hidden="true"></i> Request My Resume
+          </button>
+          <form name="resume-request" id="resume-request-form" class="resume-form" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+            <input type="hidden" name="form-name" value="resume-request">
+            <p class="hp-field" aria-hidden="true">
+              <label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+            </p>
+            <div class="form-row">
+              <label for="rr-name">Your name <span class="required" aria-hidden="true">*</span></label>
+              <input type="text" id="rr-name" name="name" required autocomplete="name" maxlength="120">
+            </div>
+            <div class="form-row">
+              <label for="rr-contact">Email or phone <span class="required" aria-hidden="true">*</span></label>
+              <input type="text" id="rr-contact" name="contact" required autocomplete="email" placeholder="you@example.com or (555) 555-5555" maxlength="200">
+            </div>
+            <div class="form-row">
+              <label for="rr-details">Anything else? <span class="optional">(optional)</span></label>
+              <textarea id="rr-details" name="details" rows="3" maxlength="2000" placeholder="Role, company, timeline — whatever helps me reply with context."></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="resume-btn" id="resume-request-submit">
+                <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Request
+              </button>
+              <button type="button" class="form-cancel" id="resume-request-cancel">Cancel</button>
+            </div>
+            <p class="form-status" id="resume-request-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
         <div class="social-links">
           <a href="https://www.linkedin.com/in/flippen/" target="_blank" rel="noopener noreferrer"
             aria-label="Connect with Jesse Flippen on LinkedIn">

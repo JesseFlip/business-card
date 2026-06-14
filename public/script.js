@@ -665,6 +665,76 @@ function initDecoder() {
 }
 
 // ═══════════════════════════════════════════════════════
+// Resume Request Form — expandable form, AJAX submit to Netlify Forms
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Wires the "Request My Resume" button to an inline expandable form.
+ * Submits via fetch() to Netlify Forms so the user stays on the page.
+ */
+function initResumeRequest() {
+    const toggle = document.getElementById('resume-request-toggle');
+    const form = document.getElementById('resume-request-form');
+    const cancel = document.getElementById('resume-request-cancel');
+    const submit = document.getElementById('resume-request-submit');
+    const status = document.getElementById('resume-request-status');
+    if (!toggle || !form || !cancel || !submit || !status) return;
+
+    const setStatus = (message, kind) => {
+        status.textContent = message;
+        status.classList.remove('is-success', 'is-error');
+        if (kind) status.classList.add(`is-${kind}`);
+    };
+
+    const openForm = () => {
+        form.hidden = false;
+        toggle.hidden = true;
+        toggle.setAttribute('aria-expanded', 'true');
+        const nameInput = document.getElementById('rr-name');
+        if (nameInput) nameInput.focus();
+    };
+
+    const closeForm = () => {
+        form.hidden = true;
+        toggle.hidden = false;
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+        setStatus('', null);
+    };
+
+    toggle.addEventListener('click', openForm);
+    cancel.addEventListener('click', closeForm);
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        setStatus('Sending…', null);
+        submit.disabled = true;
+
+        const formData = new FormData(form);
+        // Netlify expects URL-encoded form data for AJAX submissions
+        const body = new URLSearchParams(formData).toString();
+
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body
+            });
+            if (!response.ok) throw new Error(`status ${response.status}`);
+
+            form.reset();
+            setStatus('Thanks — your request was sent. Jesse will reply shortly.', 'success');
+            // Replace fields with confirmation; keep the success message visible
+            const fields = form.querySelectorAll('.form-row, .form-actions');
+            fields.forEach((el) => { el.hidden = true; });
+        } catch (err) {
+            setStatus('Something went wrong. Please email jesse@jflippen.com directly.', 'error');
+            submit.disabled = false;
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════
 // Boot
 // ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function () {
@@ -674,6 +744,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initCarousel();
     fetchBadges();
     fetchGitHubRepos();
+    initResumeRequest();
 
     // Initialize terminal features
     initCommandTerminal();

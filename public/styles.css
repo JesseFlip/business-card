@@ -518,17 +518,147 @@ html[data-theme="terminal"] .avatar {
     background-color: var(--accent);
     color: white;
     padding: 13px 26px;
+    border: none;
     border-radius: 6px;
     text-decoration: none;
     font-weight: 700;
     font-size: 0.95rem;
+    font-family: inherit;
     margin-top: 24px;
+    cursor: pointer;
     transition: background var(--transition), transform var(--transition);
 }
 
 .resume-btn:hover {
     background-color: var(--accent-dark);
     transform: translateY(-1px);
+}
+
+.resume-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+/* ═══════ Resume request form ═══════ */
+.resume-request {
+    margin-top: 24px;
+}
+
+.resume-request .resume-btn {
+    margin-top: 0;
+}
+
+.resume-form {
+    max-width: 520px;
+    margin-top: 16px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.resume-form .form-row {
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.resume-form label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.resume-form .required {
+    color: var(--accent);
+    margin-left: 2px;
+}
+
+.resume-form .optional {
+    font-weight: 400;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.resume-form input[type="text"],
+.resume-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text);
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.resume-form input[type="text"]:focus,
+.resume-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.15);
+}
+
+.resume-form textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.resume-form .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.resume-form .form-actions .resume-btn {
+    margin-top: 0;
+}
+
+.resume-form .form-cancel {
+    background: transparent;
+    color: var(--text-light);
+    border: none;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.resume-form .form-cancel:hover {
+    color: var(--text);
+}
+
+.resume-form .form-status {
+    margin: 12px 0 0;
+    font-size: 0.9rem;
+    min-height: 1.2em;
+}
+
+.resume-form .form-status.is-success {
+    color: var(--success, var(--accent));
+    font-weight: 600;
+}
+
+.resume-form .form-status.is-error {
+    color: #d23030;
+    font-weight: 600;
+}
+
+/* Honeypot — hidden from real users, visible to naive bots */
+.resume-form .hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 .social-links {
